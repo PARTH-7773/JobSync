@@ -1,7 +1,7 @@
 import { validationResult } from "express-validator";
 import Redis from 'ioredis'
 
-import { createUser, seekerProfileUpdate } from "../services/user.service.js";
+import { createUser, seekerProfile, seekerProfileUpdate } from "../services/user.service.js";
 import BlackListToken from "../models/blackList.model.js";
 import User from "../models/user.model.js";
 
@@ -80,6 +80,7 @@ const loginUser = async (req, res) => {
         samSite: "lax",
         maxAge: 60 * 60 * 24 * 1000
     })
+    user.password = undefined
     redis.set(`user:${user._id}`, JSON.stringify(user), 'EX', 60 * 60 * 24 * 3);
     res.status(200).json({
         success: true,
@@ -97,7 +98,6 @@ const getUserProfile = async (req, res) => {
     //     message: "User profile fetch success",
     //     data: req.user
     // })
-
     const user = await redis.get(`user:${req.user._id}`)
     // console.log(user)
 
@@ -106,7 +106,6 @@ const getUserProfile = async (req, res) => {
         message: "Redis data fetch",
         data: JSON.parse(user)
     })
-
 }
 
 const logoutUser = async (req, res) => {
@@ -125,7 +124,7 @@ const logoutUser = async (req, res) => {
 
 const updateSeekerProfile = async (req, res) => {
     const { _id } = req.user
-    const { skills, experience, education } = req.body
+    const { phone, skills, experience, education } = req.body
 
     if (!skills || !experience || !education) {
         return res.status(400).json({
@@ -133,7 +132,6 @@ const updateSeekerProfile = async (req, res) => {
             message: "All feilds are required"
         })
     }
-
     try {
         const seeker = await seekerProfileUpdate(_id, skills, experience, education)
         return res.status(200).json({
@@ -156,5 +154,22 @@ const updateSeekerProfile = async (req, res) => {
     }
 }
 
+const getSeekerProfile =async (req, res) => {
+    const user_id = req.user._id;
+    try {
+        const profile =await seekerProfile(user_id);
+        return res.status(profile? 200: 404).json({
+            success : profile ? true : false,
+            message: profile ? "Seeker profile fetched" : "Seeker Not Found",
+            data: profile? profile : null
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
 
-export default { registerUser, loginUser, getUserProfile, logoutUser, updateSeekerProfile }
+
+export default { registerUser, loginUser, getUserProfile, logoutUser, updateSeekerProfile, getSeekerProfile }

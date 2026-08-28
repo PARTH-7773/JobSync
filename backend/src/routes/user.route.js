@@ -23,5 +23,6 @@ router.get("/profile", authMiddleware, userController.getUserProfile);
 router.get("/logout", authMiddleware, userController.logoutUser)
 
 router.patch("/update-profile", seekerMiddleware, userController.updateSeekerProfile);
+router.get('/seeker-profile', seekerMiddleware , userController.getSeekerProfile)
 
 export default router;

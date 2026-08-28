@@ -36,7 +36,7 @@ export const createSeekerProfile = async (user) => {
     }
 
     const seeker = await SeekerProfile.create({ user_id: user._id })
-    console.log(seeker)
+    // console.log(seeker)
 }
 
 
@@ -44,7 +44,15 @@ export const seekerProfileUpdate = async (user_id, skills, experience, education
     if (!user_id || !skills || !experience || !education) {
         throw new Error("All feilds are required!");
     }
-    const seeker = await SeekerProfile.findOneAndUpdate({ user_id }, { skills, experience, education },{returnDocument:"after"});
+    const seeker = await SeekerProfile.findOneAndUpdate({ user_id }, { skills, experience, education }, { returnDocument: "after" });
 
     return seeker
+}
+
+export const seekerProfile = async(user_id)=>{
+    if (!user_id) {
+        throw new Error("Seeker ID is Missing");
+    }
+
+    return await SeekerProfile.findOne({user_id})
 }
