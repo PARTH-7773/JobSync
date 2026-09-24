@@ -24,7 +24,7 @@ export const createUser = async ({ fullname, username, email, hasedPassword, rol
 
 export const findUserDB = async (email) => {
     if (!email) {
-        throw new Error("Email not exixst");
+        throw new Error("Email not exist");
     }
     return await userModel.findOne({ email }).select("+password")
 }
@@ -49,10 +49,10 @@ export const seekerProfileUpdate = async (user_id, skills, experience, education
     return seeker
 }
 
-export const seekerProfile = async(user_id)=>{
+export const seekerProfile = async (user_id) => {
     if (!user_id) {
         throw new Error("Seeker ID is Missing");
     }
 
-    return await SeekerProfile.findOne({user_id})
+    return await SeekerProfile.findOne({ user_id })
 }
