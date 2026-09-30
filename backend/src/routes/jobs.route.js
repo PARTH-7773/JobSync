@@ -11,7 +11,6 @@ const jobRouter = Router();
  * @access public 
 */
 jobRouter.get('/get-all-jobs', jobController.getAllJobs)
-
 /**
  * @route - POST api/v1/job/new-job
  * @description - create new job if only have access employer
@@ -19,9 +18,9 @@ jobRouter.get('/get-all-jobs', jobController.getAllJobs)
 */
 jobRouter.post('/new-job', employerMiddleware, newJobValdation, jobController.newJob)
 
-jobRouter.get("/get-job/:id", jobController.getJob)
+jobRouter.get('/browse-all-jobs', jobController.browseAllJobs)
 
-
-
+jobRouter.get("/get-job/:id", jobController.getJob);
+jobRouter.get("/active-jobs/:company_id", employerMiddleware , jobController.activeJobs)
 
 export default jobRouter;

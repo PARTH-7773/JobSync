@@ -5,7 +5,8 @@ const jobSchema = new mongoose.Schema({
     company_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "companie",
-        required: [true, 'Company ID is required']
+        required: [true, 'Company ID is required'],
+        index:true
     },
     title: {
         type: String,

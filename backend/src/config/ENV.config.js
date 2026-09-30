@@ -3,7 +3,10 @@ dotenv.config()
 
 
 if (!process.env.MONGO_URI) {
-    throw new Error("MONGO_URI  not defined in envornment variabls");
+    throw new Error("MONGO_URI not defined in env");
+}
+if (!process.env.FRONTEND_URL) {
+    throw new Error("FRONTEND_URL not defined in env");
 }
 
 
@@ -11,6 +14,7 @@ const config = {
     JWT_SECRET: process.env.JWT_SECRET,
     MONGO_URI:process.env.MONGO_URI,
     PORT:process.env.PORT,
+    FRONTEND_URL:process.env.FRONTEND_URL
 }
 
 export default config;
